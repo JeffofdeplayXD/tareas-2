@@ -1,0 +1,50 @@
+ejercicio 2
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+struct Product {
+    int code;
+    std::string name;
+    int quantity;
+};
+
+class Inventory {
+private:
+    std::vector<Product> products;
+
+public:
+    void addProduct(int code, std::string name, int quantity) {
+        products.push_back({code, name, quantity});
+    }
+
+    void sortInventory() {
+        std::sort(products.begin(), products.end(),  {
+            return a.name < b.name;
+        });
+    }
+
+    Product* findProductByCode(int code) {
+        for (auto& product : products) {
+            if (product.code == code) {
+                return &product;
+            }
+        }
+        return nullptr;
+    }
+
+    void sellProduct(int code, int quantity) {
+        Product* product = findProductByCode(code);
+        if (product && product->quantity >= quantity) {
+            product->quantity -= quantity;
+        }
+    }
+
+    void restockProduct(int code, int quantity) {
+        Product* product = findProductByCode(code);
+        if (product) {
+            product->quantity += quantity;
+        }
+    }
+};
