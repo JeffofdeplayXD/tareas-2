@@ -1,0 +1,56 @@
+ejercicio 4 
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+
+class TemperatureRecord {
+private:
+    std::vector<std::vector<double>> temperatures;
+
+public:
+    TemperatureRecord(const std::vector<std::vector<double>>& temperatures) : temperatures(temperatures) {}
+
+    std::vector<double> calculateDailyAverages() {
+        std::vector<double> averages;
+        for (const auto& dailyTemperatures : temperatures) {
+            double sum = std::accumulate(dailyTemperatures.begin(), dailyTemperatures.end(), 0.0);
+            averages.push_back(sum / dailyTemperatures.size());
+        }
+        return averages;
+    }
+
+    void sortDailyTemperatures() {
+        for (auto& dailyTemperatures : temperatures) {
+            std::sort(dailyTemperatures.begin(), dailyTemperatures.end());
+        }
+    }
+
+    std::pair<int, std::pair<double, double>> findDayWithHighestAndLowestTemp() {
+        int day = 0;
+        double highest = -std::numeric_limits<double>::infinity();
+        double lowest = std::numeric_limits<double>::infinity();
+        for (int i = 0; i < temperatures.size(); ++i) {
+            for (double temp : temperatures[i]) {
+                if (temp > highest) {
+                    highest = temp;
+                    day = i;
+                }
+                if (temp < lowest) {
+                    lowest = temp;
+                    day = i;
+                }
+            }
+        }
+        return {day, {highest, lowest}};
+    }
+
+    void displayDailyAveragesAndExtremeTemps() {
+        std::vector<double> averages = calculateDailyAverages();
+        for (int i = 0; i < averages.size(); ++i) {
+            std::cout << "El promedio diario del día " << i + 1 << " es " << averages[i] << std::endl;
+        }
+        auto [day, temps] = findDayWithHighestAndLowestTemp();
+        std::cout << "El día con la temperatura más alta y más baja es el día " << day + 1 << " con temperaturas de " << temps.first << " y " << temps.second << std::endl;
+    }
+};
