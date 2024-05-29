@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+class Classroom {
+private:
+    std::vector<std::vector<int>> grades;
+
+public:
+    Classroom(const std::vector<std::vector<int>>& grades) : grades(grades) {}
+
+    std::vector<double> calculateAverages() {
+        std::vector<double> averages;
+        for (const auto& studentGrades : grades) {
+            double sum = 0;
+            for (int grade : studentGrades) {
+                sum += grade;
+            }
+            averages.push_back(sum / studentGrades.size());
+        }
+        return averages;
+    }
+
+    void sortGrades() {
+        for (auto& studentGrades : grades) {
+            std::sort(studentGrades.begin(), studentGrades.end(), std::greater<int>());
+        }
+    }
+
+    int findHighestGrade(int subjectIndex) {
+        int highestGrade = 0;
+        for (const auto& studentGrades : grades) {
+            if (studentGrades[subjectIndex] > highestGrade) {
+                highestGrade = studentGrades[subjectIndex];
+            }
+        }
+        return highestGrade;
+    }
+
+    void displayAveragesAndHighestGrade(int subjectIndex) {
+        std::vector<double> averages = calculateAverages();
+        for (int i = 0; i < averages.size(); ++i) {
+            std::cout << "El promedio del estudiante " << i + 1 << " es " << averages[i] << std::endl;
+        }
+        std::cout << "La calificación más alta en la asignatura " << subjectIndex + 1 << " es " << findHighestGrade(subjectIndex) << std::endl;
+    }
+};
