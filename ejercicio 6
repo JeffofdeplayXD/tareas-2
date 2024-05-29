@@ -1,0 +1,37 @@
+ejercicio 6 
+import random
+
+# Inicialización de Datos
+def inicializar_notas(num_estudiantes=5, num_materias=3):
+    return [[random.randint(0, 100) for _ in range(num_materias)] for _ in range(num_estudiantes)]
+
+# Cálculo de Promedios
+def calcular_promedios(notas):
+    return [sum(estudiante)/len(estudiante) for estudiante in notas]
+
+# Ordenamiento de Notas
+def ordenar_notas(notas):
+    for estudiante in notas:
+        for i in range(len(estudiante)):
+            for j in range(len(estudiante) - i - 1):
+                if estudiante[j] < estudiante[j + 1]:
+                    estudiante[j], estudiante[j + 1] = estudiante[j + 1], estudiante[j]
+    return notas
+
+# Búsqueda de Notas
+def buscar_notas(notas, materia):
+    notas_materia = [estudiante[materia] for estudiante in notas]
+    return max(notas_materia), min(notas_materia)
+
+# Visualización de Datos
+def imprimir_datos(notas):
+    promedios = calcular_promedios(notas)
+    notas = ordenar_notas(notas)
+    for i, estudiante in enumerate(notas):
+        print(f'Estudiante {i+1}: Notas: {estudiante}, Promedio: {promedios[i]}')
+    for i in range(len(notas[0])):
+        max_nota, min_nota = buscar_notas(notas, i)
+        print(f'Materia {i+1}: Nota más alta: {max_nota}, Nota más baja: {min_nota}')
+
+notas = inicializar_notas()
+imprimir_datos(notas)
