@@ -1,0 +1,54 @@
+ejercicio 3 
+#include <iostream>
+#include <vector>
+
+class BoardGame {
+private:
+    std::vector<std::vector<int>> board;
+
+public:
+    BoardGame() : board(10, std::vector<int>(10, 0)) {}
+
+    void placePiece(int row, int col, int pieceType) {
+        if (row >= 0 && row < 10 && col >= 0 && col < 10) {
+            board[row][col] = pieceType;
+        }
+    }
+
+    bool checkLine(int pieceType) {
+        // Check rows and columns
+        for (int i = 0; i < 10; ++i) {
+            int rowCount = 0, colCount = 0;
+            for (int j = 0; j < 10; ++j) {
+                rowCount = (board[i][j] == pieceType) ? rowCount + 1 : 0;
+                colCount = (board[j][i] == pieceType) ? colCount + 1 : 0;
+                if (rowCount == 4 || colCount == 4) return true;
+            }
+        }
+        // Check diagonals
+        for (int i = 0; i < 10; ++i) {
+            for (int j = 0; j < 10; ++j) {
+                if (board[i][j] == pieceType) {
+                    // Check right diagonal
+                    if (i <= 6 && j <= 6 && board[i+1][j+1] == pieceType && board[i+2][j+2] == pieceType && board[i+3][j+3] == pieceType) {
+                        return true;
+                    }
+                    // Check left diagonal
+                    if (i <= 6 && j >= 3 && board[i+1][j-1] == pieceType && board[i+2][j-2] == pieceType && board[i+3][j-3] == pieceType) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    void printBoard() {
+        for (const auto& row : board) {
+            for (int piece : row) {
+                std::cout << piece << ' ';
+            }
+            std::cout << '\n';
+        }
+    }
+};
